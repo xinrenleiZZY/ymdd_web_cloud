@@ -9,7 +9,16 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 from copy import copy
 from openpyxl.styles import NamedStyle
 import tempfile
-from io import BytesIO
+from io import BytesIO, StringIO
+import requests
+
+# 新增：配置GitHub仓库信息（请替换为你的实际信息）
+GITHUB_REPO_INFO = {
+    "username": "xinrenleiZZY",
+    "repo_name": "ymdd_web_cloud",
+    "branch": "master",  # master
+    "hidden_file_path": "mnt/隐藏表格.xlsx"  # mnt文件夹下的隐藏表格路径
+}
 
 def print_banner():
     """显示程序标题"""
@@ -97,6 +106,34 @@ def copy_sheet(source_wb, source_sheet_name, target_wb, new_sheet_name=None):
 
     return target_sheet
 
+# 新增：从GitHub获取隐藏表格
+def get_hidden_file_from_github():
+    """从GitHub仓库的mnt文件夹读取隐藏表格"""
+    try:
+        # 构建GitHub原始文件链接
+        # https://github.com/xinrenleiZZY/ymdd_web_cloud/blob/master/mnt/%E9%9A%90%E8%97%8F%E8%A1%A8%E6%A0%BC.xlsx
+        # 构建正确的GitHub原始文件链接（用于直接下载文件）
+        github_url = (
+            f"https://raw.githubusercontent.com/"
+            f"{GITHUB_REPO_INFO['username']}/"
+            f"{GITHUB_REPO_INFO['repo_name']}/"
+            f"{GITHUB_REPO_INFO['branch']}/"
+            f"{GITHUB_REPO_INFO['hidden_file_path']}"
+        )
+        
+        st.info(f"正在从GitHub获取隐藏表格：{github_url}")
+        response = requests.get(github_url)
+        response.raise_for_status()  # 若请求失败（如404），抛出异常
+        
+        # 将请求内容转为文件对象供openpyxl读取
+        file_stream = BytesIO(response.content)
+        return file_stream
+    
+    except Exception as e:
+        st.error(f"获取隐藏表格失败：{str(e)}")
+        st.text("请检查GitHub仓库信息是否正确，或文件路径是否存在")
+        return None
+    
 def convert_files(source_file, hidden_file):
     """执行文件转换并返回结果"""
     try:
@@ -296,17 +333,22 @@ def main():
     # 上传源文件
     source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）", type=["xlsx"])
     
-    # 上传隐藏表格文件
-    hidden_file = st.file_uploader("选择隐藏表格文件（Excel格式）", type=["xlsx"])
+    # # 上传隐藏表格文件
+    # hidden_file = st.file_uploader("选择隐藏表格文件（Excel格式）", type=["xlsx"])
 
     if st.button("开始转换"):
         if not source_file:
             st.error("请先选择订单总表文件")
             return
         
+        # 自动从GitHub获取隐藏表格
+        hidden_file = get_hidden_file_from_github()
         if not hidden_file:
-            st.error("请先选择隐藏表格文件")
+            st.error("无法获取隐藏表格，转换终止")
             return
+        # if not hidden_file:
+        #     st.error("请先选择隐藏表格文件")
+        #     return
 
         st.info("开始转换...")
         results = convert_files(source_file, hidden_file)

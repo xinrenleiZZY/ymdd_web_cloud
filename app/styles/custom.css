@@ -1,0 +1,101 @@
+/* 全局样式 */
+body {
+    background-color: #f0f2f6;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+/* 标题样式 */
+.main-title {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 1.5rem 0;
+    letter-spacing: -0.5px;
+}
+
+.sub-title {
+    color: #34495e;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+/* 卡片样式 */
+.info-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* 按钮样式 */
+.stButton > button {
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.stButton > button:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* 下载按钮特殊样式 */
+.download-btn {
+    background-color: #10b981 !important;
+}
+
+.download-btn:hover {
+    background-color: #059669 !important;
+}
+
+/* 文件上传样式 */
+.stFileUploader {
+    margin: 1.5rem 0;
+}
+
+.stFileUploader > div {
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 2rem;
+    background-color: white;
+    transition: border-color 0.3s ease;
+}
+
+.stFileUploader:hover > div {
+    border-color: #94a3b8;
+}
+
+/* 分隔线 */
+.divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 2rem 0;
+}
+
+/* 提示信息样式 */
+.info-text {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* 成功/错误消息 */
+.stAlert {
+    border-radius: 8px;
+    margin: 1rem 0;
+}

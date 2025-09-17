@@ -46,7 +46,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 # 新增：配置GitHub仓库信息
 GITHUB_REPO_INFO = {
     "username": "xinrenleiZZY",
@@ -105,40 +104,10 @@ def code_info():
                         </p>
                     </div>
             """, unsafe_allow_html=True)  # 新增
-            
-            # left_container = st.container()
-            # with left_container:
-            #     st.markdown('<div class="left-column-content">', unsafe_allow_html=True)  # 新增
-            #     st.subheader("📝 程序说明")
-            #     st.markdown("""
-            #     <p class="info-text">开发者:广州办AI钟工</p>
-            #     <p class="info-text">
-            #     本工具将何氏订单总表的数据转换为两个标准格式文件：
-            #     <br><br>
-            #     1. <strong>订单录入结果</strong> - 按生产单号去重后的模具级别信息
-            #     <br>
-            #     2. <strong>工件导入结果</strong> - 包含所有工件及配件的详细信息
-            #     </p>
-            #     """, unsafe_allow_html=True)
-                
-            #     st.subheader("🔍 使用步骤")
-            #     st.markdown("""
-            #     <p class="info-text">
-            #     1. 点击"浏览文件（Browse files）"选择订单总表Excel文件
-            #     <br>
-            #     2. 点击"开始转换"按钮
-            #     <br>
-            #     3. 转换完成后下载生成的两个文件
-            #     </p>
-            #     """, unsafe_allow_html=True)
-            #     st.markdown('</div>', unsafe_allow_html=True)  # 新增
-        
 
         with col2:
             right_container = st.container()
             with right_container:
-                # st.markdown('<div class="right-column-content">', unsafe_allow_html=True)  # 新增
-                # st.subheader("📂 上传文件")
                 # source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）     点击Browse files", type=["xlsx"])
                 # st.subheader("❗ 下载默认路径")
                 # default_download_path = st.text_input("默认下载路径（可修改）", value="C:/Users/用户名/Downloads",  help="此路径仅作为参考记录，实际下载位置取决于浏览器设置")
@@ -169,7 +138,35 @@ def code_info():
                                 else:
                                     st.error("程序执行失败！请检查错误信息")
                 st.markdown('</div>', unsafe_allow_html=True)  # 新增
+                # 下载区域（独立显示）
+                if 'conversion_results' in st.session_state:
+                    st.subheader("📥 下载转换结果")
+                    results = st.session_state['conversion_results']
+                    # 优化提示文字
+                    st.info("提示：点击下载按钮后，会弹出保存窗口，请选择本地文件夹进行保存")
 
+                    wat = st.container()
+                    with wat:
+                        st.download_button(
+                            label="下载订单文件",
+                            data=results['order']['buffer'],
+                            file_name=results['order']['filename'],
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        )
+                    
+                        st.download_button(
+                            label="下载工件文件",
+                            data=results['workpiece']['buffer'],
+                            file_name=results['workpiece']['filename'],
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        )
+                        # 增加详细的路径说明
+                        st.info("""
+                        💡 下载路径设置说明：  
+                        1. 文件将保存到浏览器默认的"下载"文件夹  
+                        2. 如需修改路径，可在浏览器设置中调整默认下载位置  
+                        3. 部分浏览器支持"每次下载时询问保存位置"的选项
+                        """)
                 with st.expander("程序说明", expanded=True):
                     st.markdown("""
                         <div class="left-column-content">
@@ -190,38 +187,7 @@ def code_info():
                             3. 下载生成的两个文件
                             </p>
                         </div>
-                """, unsafe_allow_html=True)  # 新增
-            
-
-            # 下载区域（独立显示）
-            if 'conversion_results' in st.session_state:
-                st.subheader("📥 下载转换结果")
-                results = st.session_state['conversion_results']
-                # 优化提示文字
-                st.info("提示：点击下载按钮后，会弹出保存窗口，请选择本地文件夹进行保存")
-
-                wat = st.container()
-                with wat:
-                    st.download_button(
-                        label="下载订单文件",
-                        data=results['order']['buffer'],
-                        file_name=results['order']['filename'],
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    )
-                
-                    st.download_button(
-                        label="下载工件文件",
-                        data=results['workpiece']['buffer'],
-                        file_name=results['workpiece']['filename'],
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    )
-                    # 增加详细的路径说明
-                    st.info("""
-                    💡 下载路径设置说明：  
-                    1. 文件将保存到浏览器默认的"下载"文件夹  
-                    2. 如需修改路径，可在浏览器设置中调整默认下载位置  
-                    3. 部分浏览器支持"每次下载时询问保存位置"的选项
-                    """)
+                """, unsafe_allow_html=True)  # 新增     
 
 # 复制工作表函数
 def copy_sheet(source_wb, source_sheet_name, target_wb, new_sheet_name=None):

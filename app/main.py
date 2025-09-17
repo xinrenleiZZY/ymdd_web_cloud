@@ -26,18 +26,20 @@ st.markdown(
     .stApp {
         background-color: rgb(255, 255, 255);
     }
-    /* 左侧列样式 */
-    div[data-testid="column"]:nth-of-type(1) {
-        background: rgba(255, 248, 225, 0.6);
-        padding: 1.5rem;
-        border-radius: 0.5rem;
+    /* 强化左侧列样式（提高选择器特异性） */
+    .stApp > div:nth-child(1) > div > div > div > div[data-testid="column"]:nth-of-type(1) {
+        background: rgba(255, 248, 225, 0.6) !important;
+        padding: 1.5rem !important;
+        border-radius: 0.5rem !important;
+        margin-right: 1rem !important; /* 增加列间距，避免内容紧贴 */
     }
 
-    /* 右侧列样式 */
-    div[data-testid="column"]:nth-of-type(2) {
-        background: rgba(225, 240, 255, 0.6);
-        padding: 1.5rem;
-        border-radius: 0.5rem;
+    /* 强化右侧列样式（提高选择器特异性） */
+    .stApp > div:nth-child(1) > div > div > div > div[data-testid="column"]:nth-of-type(2) {
+        background: rgba(225, 240, 255, 0.6) !important;
+        padding: 1.5rem !important;
+        border-radius: 0.5rem !important;
+        margin-left: 1rem !important; /* 增加列间距 */
     }
     </style>
     """,
@@ -80,59 +82,68 @@ def code_info():
         col1, col2 = st.columns([1, 1.5])
         
         with col1:
-            st.subheader("📝 程序说明")
-            st.markdown("""
-            <p class="info-text">开发者:广州办AI钟工</p>
-            <p class="info-text">
-            本工具将何氏订单总表的数据转换为两个标准格式文件：
-            <br><br>
-            1. <strong>订单录入结果</strong> - 按生产单号去重后的模具级别信息
-            <br>
-            2. <strong>工件导入结果</strong> - 包含所有工件及配件的详细信息
-            </p>
-            """, unsafe_allow_html=True)
-            
-            st.subheader("🔍 使用步骤")
-            st.markdown("""
-            <p class="info-text">
-            1. 点击"浏览文件（Browse files）"选择订单总表Excel文件
-            <br>
-            2. 点击"开始转换"按钮
-            <br>
-            3. 转换完成后下载生成的两个文件
-            </p>
-            """, unsafe_allow_html=True)
+            left_container = st.container()
+            with left_container:
+                st.markdown('<div class="left-column-content">', unsafe_allow_html=True)  # 新增
+                st.subheader("📝 程序说明")
+                st.markdown("""
+                <p class="info-text">开发者:广州办AI钟工</p>
+                <p class="info-text">
+                本工具将何氏订单总表的数据转换为两个标准格式文件：
+                <br><br>
+                1. <strong>订单录入结果</strong> - 按生产单号去重后的模具级别信息
+                <br>
+                2. <strong>工件导入结果</strong> - 包含所有工件及配件的详细信息
+                </p>
+                """, unsafe_allow_html=True)
+                
+                st.subheader("🔍 使用步骤")
+                st.markdown("""
+                <p class="info-text">
+                1. 点击"浏览文件（Browse files）"选择订单总表Excel文件
+                <br>
+                2. 点击"开始转换"按钮
+                <br>
+                3. 转换完成后下载生成的两个文件
+                </p>
+                """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)  # 新增
         
+
         with col2:
-            st.subheader("📂 上传文件")
-            source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）     点击Browse files", type=["xlsx"])
-            # st.subheader("❗ 下载默认路径")
-            # default_download_path = st.text_input("默认下载路径（可修改）", value="C:/Users/用户名/Downloads",  help="此路径仅作为参考记录，实际下载位置取决于浏览器设置")
-            st.subheader("🚀 开始处理")
-            # 处理按钮
-            if st.button("🚀 开始转换"):
-                if not source_file:
-                    st.error("请先选择订单总表文件")
-                else:
-                    # 获取隐藏文件
-                    hidden_file = get_hidden_file_from_github()
-                    if not hidden_file:
-                        st.error("无法获取必要资源，转换终止")
+            right_container = st.container()
+            with right_container:
+                st.markdown('<div class="right-column-content">', unsafe_allow_html=True)  # 新增
+                st.subheader("📂 上传文件")
+                source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）     点击Browse files", type=["xlsx"])
+                # st.subheader("❗ 下载默认路径")
+                # default_download_path = st.text_input("默认下载路径（可修改）", value="C:/Users/用户名/Downloads",  help="此路径仅作为参考记录，实际下载位置取决于浏览器设置")
+                st.subheader("🚀 开始处理")
+                # 处理按钮
+                if st.button("🚀 开始转换"):
+                    if not source_file:
+                        st.error("请先选择订单总表文件")
                     else:
-                        # 在expander中显示处理过程
-                        with st.expander("处理过程", expanded=False):
-                            with st.spinner("正在进行数据转换，请稍候..."):
-                                results = convert_files(source_file, hidden_file)
-                            
-                            if results:
-                                st.success("转换完成！")
-                                st.info(f"订单录入文件：{results['order']['filename']}，共 {results['order']['count']} 条记录")
-                                st.info(f"工件导入文件：{results['workpiece']['filename']}，共 {results['workpiece']['count']} 条记录")
+                        # 获取隐藏文件
+                        hidden_file = get_hidden_file_from_github()
+                        if not hidden_file:
+                            st.error("无法获取必要资源，转换终止")
+                        else:
+                            # 在expander中显示处理过程
+                            with st.expander("处理过程", expanded=False):
+                                with st.spinner("正在进行数据转换，请稍候..."):
+                                    results = convert_files(source_file, hidden_file)
                                 
-                                # 存储结果到session state以便后续使用
-                                st.session_state['conversion_results'] = results
-                            else:
-                                st.error("程序执行失败！请检查错误信息")
+                                if results:
+                                    st.success("转换完成！")
+                                    st.info(f"订单录入文件：{results['order']['filename']}，共 {results['order']['count']} 条记录")
+                                    st.info(f"工件导入文件：{results['workpiece']['filename']}，共 {results['workpiece']['count']} 条记录")
+                                    
+                                    # 存储结果到session state以便后续使用
+                                    st.session_state['conversion_results'] = results
+                                else:
+                                    st.error("程序执行失败！请检查错误信息")
+                st.markdown('</div>', unsafe_allow_html=True)  # 新增
 
             # 下载区域（独立显示）
             if 'conversion_results' in st.session_state:

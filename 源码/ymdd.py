@@ -268,14 +268,14 @@ def convert_files(source_file):
         if 'Sheet' in order_wb.sheetnames:
             del order_wb['Sheet']
         
-        # 复制page工作表
-        copy_sheet(hidden_wb, 'page', order_wb, new_sheet_name='page')
         
         # 添加订单录入工作表并写入数据
         order_ws = order_wb.create_sheet('订单录入')
         for r in dataframe_to_rows(df_order_result, index=False, header=True):
             order_ws.append(r)
         
+        # 复制page工作表
+        copy_sheet(hidden_wb, 'page', order_wb, new_sheet_name='page')
         # 设置订单录入表的列宽和行高
         column_widths = {
             'A': 35, 'B': 35, 'C': 15, 'D': 35, 'E': 12,
@@ -304,14 +304,14 @@ def convert_files(source_file):
         if 'Sheet' in workpiece_wb.sheetnames:
             del workpiece_wb['Sheet']
         
-        # 复制page工作表
-        copy_sheet(hidden_wb, 'page2', workpiece_wb, new_sheet_name='page')
         
         # 添加工件信息工作表并写入数据
         workpiece_ws = workpiece_wb.create_sheet('工件信息')
         for r in dataframe_to_rows(df_workpiece_result, index=False, header=True):
             workpiece_ws.append(r)
         
+        # 复制page工作表
+        copy_sheet(hidden_wb, 'page2', workpiece_wb, new_sheet_name='page')
         # 设置工件信息表的列宽和行高
         workpiece_column_widths = {
             'A': 15, 'B': 50, 'C': 35, 'D': 20, 'E': 8, 'F': 10, 'G': 12

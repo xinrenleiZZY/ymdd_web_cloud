@@ -11,6 +11,7 @@ from openpyxl.styles import NamedStyle
 import tempfile
 from io import BytesIO, StringIO
 import requests
+import base64 
 
 # 页面配置
 st.set_page_config(
@@ -105,7 +106,8 @@ def code_info():
         with col2:
             st.subheader("📂 上传文件")
             source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）     点击Browse files", type=["xlsx"])
-            
+            st.subheader("❗ 下载默认路径")
+            default_download_path = st.text_input("默认下载路径（可修改）", value="C:/Users/用户名/Downloads",  help="此路径仅作为参考记录，实际下载位置取决于浏览器设置")
             st.subheader("🚀 开始处理")
             # 处理按钮
             if st.button("🚀 开始转换"):
@@ -136,6 +138,8 @@ def code_info():
             if 'conversion_results' in st.session_state:
                 st.subheader("📥 下载转换结果")
                 results = st.session_state['conversion_results']
+                # 优化提示文字
+                st.info("提示：点击下载按钮后，会弹出保存窗口，请选择本地文件夹进行保存")
                 wat = st.container()
                 with wat:
                     st.download_button(
@@ -151,6 +155,13 @@ def code_info():
                         file_name=results['workpiece']['filename'],
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     )
+                    # 增加详细的路径说明
+                    st.info("""
+                    💡 下载路径设置说明：  
+                    1. 文件将保存到浏览器默认的"下载"文件夹  
+                    2. 如需修改路径，可在浏览器设置中调整默认下载位置  
+                    3. 部分浏览器支持"每次下载时询问保存位置"的选项
+                    """)
 
 def copy_sheet(source_wb, source_sheet_name, target_wb, new_sheet_name=None):
     """复制工作表（包含完整格式）"""
@@ -366,12 +377,10 @@ def convert_files(source_file, hidden_file):
         order_wb = Workbook()
         if 'Sheet' in order_wb.sheetnames:
             del order_wb['Sheet']
-        
-        copy_sheet(hidden_wb, 'page', order_wb, new_sheet_name='page')
         order_ws = order_wb.create_sheet('订单录入')
         for r in dataframe_to_rows(df_order_result, index=False, header=True):
             order_ws.append(r)
-        
+        copy_sheet(hidden_wb, 'page', order_wb, new_sheet_name='page')
         column_widths = {
             'A': 35, 'B': 35, 'C': 15, 'D': 35, 'E': 12,
             'F': 15, 'G': 20, 'H': 12, 'I': 8
@@ -394,11 +403,10 @@ def convert_files(source_file, hidden_file):
         if 'Sheet' in workpiece_wb.sheetnames:
             del workpiece_wb['Sheet']
         
-        copy_sheet(hidden_wb, 'page2', workpiece_wb, new_sheet_name='page')
         workpiece_ws = workpiece_wb.create_sheet('工件信息')
         for r in dataframe_to_rows(df_workpiece_result, index=False, header=True):
             workpiece_ws.append(r)
-        
+        copy_sheet(hidden_wb, 'page2', workpiece_wb, new_sheet_name='page')
         workpiece_column_widths = {
             'A': 15, 'B': 50, 'C': 35, 'D': 20, 'E': 8, 'F': 10, 'G': 12
         }

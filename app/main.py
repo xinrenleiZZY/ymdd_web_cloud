@@ -70,11 +70,10 @@ def print_banner():
     """显示应用程序标题横幅"""
     mat = st.container()
     with mat:
-        st.markdown('<div class="mat1">', unsafe_allow_html=True)
-        st.markdown('<h1 class="main-title">益模订单转换工具</h1>', unsafe_allow_html=True)
+        st.markdown('<div class="m1"><h2 class="main-title2">益模订单转换工具</h2></div>', unsafe_allow_html=True)
         st.markdown('<p class="sub-title">非开发人员专用版本 v2.0</p>', unsafe_allow_html=True)
         st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        
     
 def code_info():
     with st.container():
@@ -82,43 +81,69 @@ def code_info():
         col1, col2 = st.columns([1, 1.5])
         
         with col1:
-            left_container = st.container()
-            with left_container:
-                st.markdown('<div class="left-column-content">', unsafe_allow_html=True)  # 新增
-                st.subheader("📝 程序说明")
+            st.subheader("📂 上传文件")
+            source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）     点击Browse files", type=["xlsx"])
+            with st.expander("程序说明", expanded=True):
                 st.markdown("""
-                <p class="info-text">开发者:广州办AI钟工</p>
-                <p class="info-text">
-                本工具将何氏订单总表的数据转换为两个标准格式文件：
-                <br><br>
-                1. <strong>订单录入结果</strong> - 按生产单号去重后的模具级别信息
-                <br>
-                2. <strong>工件导入结果</strong> - 包含所有工件及配件的详细信息
-                </p>
-                """, unsafe_allow_html=True)
+                    <div class="left-column-content">
+                        <div class="custom-subheader">📝 程序说明</div>
+                        <p class="info-text">开发者:广州办AI钟工</p>
+                        <p class="info-text">
+                        本工具将何氏订单总表的数据转换为两个标准格式文件：
+                        <br><br>
+                        1. <strong>订单录入结果</strong> - 按生产单号去重后的模具级别信息
+                        <br>
+                        2. <strong>工件导入结果</strong> - 包含所有工件及配件的详细信息
+                        </p>
+                        <div class="custom-subheader">🔍 使用步骤</div>
+                        <p class="info-text">
+                        1. 点击"浏览文件（Browse files）"选择订单总表Excel文件
+                        <br>
+                        2. 点击"开始转换"按钮
+                        <br>
+                        3. 转换完成后下载生成的两个文件
+                        </p>
+                    </div>
+            """, unsafe_allow_html=True)  # 新增
+            
+            # left_container = st.container()
+            # with left_container:
+            #     st.markdown('<div class="left-column-content">', unsafe_allow_html=True)  # 新增
+            #     st.subheader("📝 程序说明")
+            #     st.markdown("""
+            #     <p class="info-text">开发者:广州办AI钟工</p>
+            #     <p class="info-text">
+            #     本工具将何氏订单总表的数据转换为两个标准格式文件：
+            #     <br><br>
+            #     1. <strong>订单录入结果</strong> - 按生产单号去重后的模具级别信息
+            #     <br>
+            #     2. <strong>工件导入结果</strong> - 包含所有工件及配件的详细信息
+            #     </p>
+            #     """, unsafe_allow_html=True)
                 
-                st.subheader("🔍 使用步骤")
-                st.markdown("""
-                <p class="info-text">
-                1. 点击"浏览文件（Browse files）"选择订单总表Excel文件
-                <br>
-                2. 点击"开始转换"按钮
-                <br>
-                3. 转换完成后下载生成的两个文件
-                </p>
-                """, unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)  # 新增
+            #     st.subheader("🔍 使用步骤")
+            #     st.markdown("""
+            #     <p class="info-text">
+            #     1. 点击"浏览文件（Browse files）"选择订单总表Excel文件
+            #     <br>
+            #     2. 点击"开始转换"按钮
+            #     <br>
+            #     3. 转换完成后下载生成的两个文件
+            #     </p>
+            #     """, unsafe_allow_html=True)
+            #     st.markdown('</div>', unsafe_allow_html=True)  # 新增
         
 
         with col2:
             right_container = st.container()
             with right_container:
-                st.markdown('<div class="right-column-content">', unsafe_allow_html=True)  # 新增
-                st.subheader("📂 上传文件")
-                source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）     点击Browse files", type=["xlsx"])
+                # st.markdown('<div class="right-column-content">', unsafe_allow_html=True)  # 新增
+                # st.subheader("📂 上传文件")
+                # source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）     点击Browse files", type=["xlsx"])
                 # st.subheader("❗ 下载默认路径")
                 # default_download_path = st.text_input("默认下载路径（可修改）", value="C:/Users/用户名/Downloads",  help="此路径仅作为参考记录，实际下载位置取决于浏览器设置")
                 st.subheader("🚀 开始处理")
+                source_file = st.write("一键式处理工件、订单文件（自动化）点击🚀 开始处理  ", type=["xlsx"])
                 # 处理按钮
                 if st.button("🚀 开始转换"):
                     if not source_file:
@@ -144,6 +169,29 @@ def code_info():
                                 else:
                                     st.error("程序执行失败！请检查错误信息")
                 st.markdown('</div>', unsafe_allow_html=True)  # 新增
+
+                with st.expander("程序说明", expanded=True):
+                    st.markdown("""
+                        <div class="left-column-content">
+                            <div class="custom-subheader">📝 下载说明</div>
+                            <p class="info-text">
+                            处理完成后，下方会产生两个按钮，可下载生成的文件：
+                            <br><br>
+                            1. <strong>订单录入结果</strong> 
+                            <br>
+                            2. <strong>工件导入结果</strong> 
+                            </p>
+                            <div class="custom-subheader">🔍 使用步骤</div>
+                            <p class="info-text">
+                            1. 点击"开始转换（D files）"
+                            <br>
+                            2. 点击"订单录入结果、工件导入结果"按钮
+                            <br>
+                            3. 下载生成的两个文件
+                            </p>
+                        </div>
+                """, unsafe_allow_html=True)  # 新增
+            
 
             # 下载区域（独立显示）
             if 'conversion_results' in st.session_state:
@@ -175,6 +223,7 @@ def code_info():
                     3. 部分浏览器支持"每次下载时询问保存位置"的选项
                     """)
 
+# 复制工作表函数
 def copy_sheet(source_wb, source_sheet_name, target_wb, new_sheet_name=None):
     """复制工作表（包含完整格式）"""
     source_sheet = source_wb[source_sheet_name]

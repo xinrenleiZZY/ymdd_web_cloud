@@ -268,7 +268,6 @@ def convert_files(source_file):
         if 'Sheet' in order_wb.sheetnames:
             del order_wb['Sheet']
        
-        
         # 添加订单录入工作表并写入数据
         order_ws = order_wb.create_sheet('订单录入')
         for r in dataframe_to_rows(df_order_result, index=False, header=True):
@@ -303,8 +302,6 @@ def convert_files(source_file):
         workpiece_wb = Workbook()
         if 'Sheet' in workpiece_wb.sheetnames:
             del workpiece_wb['Sheet']
-        
-        
         
         # 添加工件信息工作表并写入数据
         workpiece_ws = workpiece_wb.create_sheet('工件信息')

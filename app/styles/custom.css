@@ -5,17 +5,38 @@ body {
     margin: 0;
     padding: 0;
 }
-
+.m1 {
+    width: 100%;
+    text-align: center;
+    border-radius: 0.5rem;
+    padding: 1px;
+    background-color: #b6b7e6;
+}
+.left-column-content {
+    background-color: rgba(240, 220, 236, 0.311);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: auto 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+}
 /* 标题样式 */
 .main-title {
-    color: #2c3e50;
+    width: 400px;
     font-size: 2.5rem;
-    font-weight: 1100;
+    font-weight: 600;
+    height: 100px;
     text-align: center;
-    margin: 1.5rem 0;
+    margin: 0 auto;
     letter-spacing: -0.5px;
-    line-height: 1.2;
+    line-height: 1.1;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    color: #2c3e50;
+    background-color: #b6b7e6;
 }
+
 
 .sub-title {
     color: #34495e;
@@ -157,14 +178,14 @@ body {
 .stAlert {
     border-radius: 8px;
     margin: 1rem 0 !important;
-    padding: 1rem !important;
+    padding: 0 !important;
 }
 
 /* 分隔线 */
 .divider {
     height: 1px;
     background-color: #e2e8f0;
-    margin: 2rem 0;
+    margin: 0 0;
 }
 
 /* 列布局调整 */

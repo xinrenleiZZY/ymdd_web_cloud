@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>益模订单转换工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .info-cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .info-card {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #3498db;
+        }
+        
+        .info-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-card h3 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .info-card ul {
+            padding-left: 20px;
+        }
+        
+        .info-card li {
+            margin-bottom: 8px;
+        }
+        
+        .upload-area {
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+        
+        .upload-area:hover {
+            background: #e8f4fc;
+            transform: translateY(-5px);
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .file-info {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .file-info i {
+            color: #27ae60;
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .file-details {
+            display: flex;
+            align-items: center;
+        }
+        
+        .file-size {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .process-btn {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .progress-area {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            color: #7f8c8d;
+        }
+        
+        .result-area {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .download-cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .download-card {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border-top: 4px solid #27ae60;
+        }
+        
+        .download-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .download-btn {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .download-btn:hover {
+            background: #219653;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .info-cards {
+                flex-direction: column;
+            }
+            
+            .download-cards {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>益模订单转换工具</h1>
+            <p class="subtitle">非开发人员专用版本 v1.0</p>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <h2><i class="fas fa-info-circle"></i> 程序说明</h2>
+                <p>本工具将何氏订单总表的数据转换为两个标准格式文件：</p>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3><i class="fas fa-file-excel"></i> 订单录入结果</h3>
+                        <p>按生产单号去重后的模具级别信息</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-file-excel"></i> 工件导入结果</h3>
+                        <p>包含所有工件及配件的详细信息</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2><i class="fas fa-list-ol"></i> 使用步骤</h2>
+                <div class="info-card">
+                    <h3><i class="fas fa-check-circle"></i> 简单三步完成转换</h3>
+                    <ul>
+                        <li>点击"浏览文件"选择订单总表Excel文件</li>
+                        <li>点击"开始转换"按钮</li>
+                        <li>转换完成后下载生成的两个文件</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2><i class="fas fa-upload"></i> 上传文件</h2>
+                <p>选择何氏订单总表文件（Excel格式）</p>
+                
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p class="upload-text">Drag and drop file here<br><span class="file-size">Limit 200MB per file • XLSX</span></p>
+                    <button class="btn" onclick="document.getElementById('fileInput').click()"><i class="fas fa-folder-open"></i> 浏览文件</button>
+                    <input type="file" id="fileInput" accept=".xlsx" style="display: none;" onchange="handleFileSelect(event)">
+                    
+                    <div class="file-info" id="fileInfo">
+                        <div class="file-details">
+                            <i class="fas fa-file-excel"></i>
+                            <div>
+                                <p id="fileName">何氏订单总表.xlsx</p>
+                                <p class="file-size" id="fileSize">10.0KB</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-times" onclick="clearFile()" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="process-btn">
+                <button class="btn" id="processBtn" onclick="processFile()"><i class="fas fa-cogs"></i> 开始转换</button>
+            </div>
+            
+            <div class="progress-area" id="progressArea">
+                <h2><i class="fas fa-spinner fa-spin"></i> 正在处理中</h2>
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <div class="progress-info">
+                    <span id="progressText">处理中...</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+            </div>
+            
+            <div class="result-area" id="resultArea">
+                <h2><i class="fas fa-check-circle"></i> 转换完成</h2>
+                <p>文件已成功转换，请下载以下文件：</p>
+                
+                <div class="download-cards">
+                    <div class="download-card">
+                        <h3>订单录入结果</h3>
+                        <p>包含模具级别信息</p>
+                        <button class="download-btn"><i class="fas fa-download"></i> 下载</button>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h3>工件导入结果</h3>
+                        <p>包含所有工件详细信息</p>
+                        <button class="download-btn"><i class="fas fa-download"></i> 下载</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 益模订单转换工具 | 非开发人员专用版本</p>
+        </footer>
+    </div>
+
+    <script>
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileInfo = document.getElementById('fileInfo');
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileSize').textContent = formatFileSize(file.size);
+                fileInfo.style.display = 'flex';
+            }
+        }
+        
+        function clearFile() {
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileInfo').style.display = 'none';
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function processFile() {
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.value) {
+                alert('请先选择Excel文件！');
+                return;
+            }
+            
+            // 显示进度区域
+            document.getElementById('progressArea').style.display = 'block';
+            document.getElementById('processBtn').disabled = true;
+            
+            // 模拟处理过程
+            let progress = 0;
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressText = document.getElementById('progressText');
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // 显示结果区域
+                    setTimeout(() => {
+                        document.getElementById('progressArea').style.display = 'none';
+                        document.getElementById('resultArea').style.display = 'block';
+                    }, 500);
+                }
+                
+                progressBar.style.width = progress + '%';
+                progressPercent.textContent = Math.round(progress) + '%';
+                
+                if (progress < 30) {
+                    progressText.textContent = '读取文件中...';
+                } else if (progress < 60) {
+                    progressText.textContent = '处理订单数据...';
+                } else if (progress < 90) {
+                    progressText.textContent = '生成工件信息...';
+                } else {
+                    progressText.textContent = '即将完成...';
+                }
+            }, 300);
+        }
+        
+        // 拖放文件功能
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '#e8f4fc';
+            uploadArea.style.borderColor = '#2980b9';
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.background = '#f8f9fa';
+            uploadArea.style.borderColor = '#3498db';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '#f8f9fa';
+            uploadArea.style.borderColor = '#3498db';
+            
+            if (e.dataTransfer.files.length) {
+                document.getElementById('fileInput').files = e.dataTransfer.files;
+                handleFileSelect({target: {files: e.dataTransfer.files}});
+            }
+        });
+    </script>
+</body>
+</html>

@@ -2,16 +2,19 @@
 body {
     background-color: #f0f2f6;
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 /* 标题样式 */
 .main-title {
     color: #2c3e50;
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 1100;
     text-align: center;
     margin: 1.5rem 0;
     letter-spacing: -0.5px;
+    line-height: 1.2;
 }
 
 .sub-title {
@@ -22,22 +25,90 @@ body {
     opacity: 0.8;
 }
 
-/* 卡片样式 */
-.info-card {
-    background-color: white;
+/* 容器与卡片样式 */
+.main_card {
+    background-color: rgba(239, 233, 238, 0.311);
     border-radius: 12px;
     padding: 1.5rem;
     margin: 1rem 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* 卡片样式 - 增强视觉层次 */
 .info-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* 按钮样式 */
+/* 卡片内容容器 - 统一内边距 */
+.card-content {
+    padding: 0.5rem 0;
+}
+
+/* 核心布局控制 - 强制卡片内元素约束 */
+.info-card [data-testid="stVerticalBlock"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* 垂直布局子元素约束 */
+.info-card [data-testid="stVerticalBlock"] > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* 容器组件样式 */
+.info-card [data-testid="stContainer"] {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 元素容器间距优化 */
+.info-card [data-testid="element-container"] {
+    margin: 0.8rem 0 !important;
+    padding: 0 !important;
+}
+
+/* 子标题样式 - 增强区分度 */
+.info-card [data-testid="stSubheader"] {
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.8rem !important;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* 第一个子标题去除顶部间距 */
+.info-card [data-testid="stSubheader"]:first-of-type {
+    margin-top: 0 !important;
+}
+
+/* 文件上传组件优化 */
+.info-card .stFileUploader {
+    margin: 1.2rem 0 !important;
+    width: 100% !important;
+}
+
+.stFileUploader > div {
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 2rem;
+    background-color: white;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.stFileUploader:hover > div {
+    border-color: #60a5fa;
+    background-color: #f8fafc;
+}
+
+/* 按钮样式统一化 */
 .stButton > button {
     background-color: #3b82f6;
     color: white;
@@ -47,6 +118,8 @@ body {
     font-weight: 500;
     border: none;
     transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 0.5rem !important;
 }
 
 .stButton > button:hover {
@@ -55,30 +128,36 @@ body {
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-/* 下载按钮特殊样式 */
-.download-btn {
+/* 下载按钮样式区分 */
+[data-testid="download_order"] {
     background-color: #10b981 !important;
 }
 
-.download-btn:hover {
+[data-testid="download_order"]:hover {
     background-color: #059669 !important;
 }
 
-/* 文件上传样式 */
-.stFileUploader {
-    margin: 1.5rem 0;
+[data-testid="download_workpiece"] {
+    background-color: #6366f1 !important;
 }
 
-.stFileUploader > div {
-    border: 2px dashed #cbd5e1;
-    border-radius: 10px;
-    padding: 2rem;
-    background-color: white;
-    transition: border-color 0.3s ease;
+[data-testid="download_workpiece"]:hover {
+    background-color: #4f46e5 !important;
 }
 
-.stFileUploader:hover > div {
-    border-color: #94a3b8;
+/* 提示文本样式优化 */
+.info-text {
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+/* 警告/提示框样式 */
+.stAlert {
+    border-radius: 8px;
+    margin: 1rem 0 !important;
+    padding: 1rem !important;
 }
 
 /* 分隔线 */
@@ -88,14 +167,28 @@ body {
     margin: 2rem 0;
 }
 
-/* 提示信息样式 */
-.info-text {
-    color: #64748b;
-    line-height: 1.6;
+/* 列布局调整 */
+[data-testid="column"] {
+    padding: 0 1rem;
 }
 
-/* 成功/错误消息 */
-.stAlert {
-    border-radius: 8px;
-    margin: 1rem 0;
+/* 结果区域列布局 */
+.info-card [data-testid="stColumns"] {
+    margin: 1rem 0 !important;
+    gap: 1rem;
+}
+
+/* 响应式调整 - 适配小屏幕 */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .info-card {
+        padding: 1rem;
+    }
+    
+    .stFileUploader > div {
+        padding: 1.5rem 1rem;
+    }
 }

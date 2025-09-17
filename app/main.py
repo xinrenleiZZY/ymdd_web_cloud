@@ -106,8 +106,8 @@ def code_info():
         with col2:
             st.subheader("📂 上传文件")
             source_file = st.file_uploader("选择何氏订单总表文件（Excel格式）     点击Browse files", type=["xlsx"])
-            st.subheader("❗ 下载默认路径")
-            default_download_path = st.text_input("默认下载路径（可修改）", value="C:/Users/用户名/Downloads",  help="此路径仅作为参考记录，实际下载位置取决于浏览器设置")
+            # st.subheader("❗ 下载默认路径")
+            # default_download_path = st.text_input("默认下载路径（可修改）", value="C:/Users/用户名/Downloads",  help="此路径仅作为参考记录，实际下载位置取决于浏览器设置")
             st.subheader("🚀 开始处理")
             # 处理按钮
             if st.button("🚀 开始转换"):
@@ -140,6 +140,7 @@ def code_info():
                 results = st.session_state['conversion_results']
                 # 优化提示文字
                 st.info("提示：点击下载按钮后，会弹出保存窗口，请选择本地文件夹进行保存")
+
                 wat = st.container()
                 with wat:
                     st.download_button(
